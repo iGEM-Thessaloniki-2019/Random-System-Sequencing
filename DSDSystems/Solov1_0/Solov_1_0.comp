@@ -1,0 +1,69 @@
+declare component Solov_1_0(t, bm, c): taa + tbb + trr -> tcc + tbb  
+
+# Create toeholds
+sequence ta = "<t>H"
+sequence tb = "<t>H"
+sequence tr = "<t>H"
+sequence tq = "<t>H"
+sequence tc = "<t>H"
+
+# Create domains
+sequence a = "<bm>H"
+sequence b = "<bm>H"
+sequence r = "<bm>H"
+sequence c = "<bm>H"
+sequence i = "<bm>H"
+
+sequence taa = ta a
+sequence tbb = tb b
+sequence trr = tr r
+sequence tcc = tc c 
+
+# Create strands 
+strand IA = ta a
+strand IB = tb b
+strand R = tr r
+strand C = c tb
+strand ITC = i tc
+
+strand ATB = a tb
+strand BTR = b tr
+strand RTQ = r tq
+strand TCC = tc c
+strand I = i
+strand S1 = tq* r* tr* b* tb* a* ta*
+strand S2 = tq* r* tr* b* tb* c* tc* i*
+
+# Create complexes
+structure IA1 = IA : domain ..
+structure IB1 = IB : domain ..
+structure R1 = R : domain ..
+structure C1 = C : domain ..
+structure ITC1 = ITC : domain ..
+structure I1 = I : domain .
+structure TCC1 = TCC : domain ..
+
+structure GATE_1 = ATB + BTR + RTQ + S1 : domain (( + (( + (( + )))))).
+structure GATE_2 = I + TCC + IB + R + S2 : domain ( + (( + (( + (( + .)))))))
+
+structure GATE_1A = IA + BTR + RTQ + S1 : domain ((+((+((+)))).))
+structure ATB1 = ATB : domain ..
+structure GATE_1B = IA + IB + RTQ + S1 : domain (( + (( + (( + )).))))
+structure BTR1 = BTR : domain ..
+structure GATE_1C = IA + IB + R + S1 : domain (( + (( + ((+ .)))))) 
+structure RTQ1 = RTQ : domain ..
+
+structure GATE_2A = I + TCC + IB + RTQ + S2 : domain ( + (( + (( + (( + )).)))))
+structure GATE_2B = I + TCC + BTR + RTQ + S2 : domain ( + (( + (( + (( + )))).)))
+structure GATE_2C = I + C + BTR + RTQ + S2 : domain ( + (( + (( + (( + )))))).)
+structure GATE_2D = ITC + C + BTR + RTQ + S2 : domain (( + (( + (( + (( + ))))))))
+
+## Kinetics
+kinetic IA1 + GATE_1  -> ATB1 + GATE_1A
+kinetic IB1 + GATE_1A -> BTR1 + GATE_1B
+kinetic R1 + GATE_1B -> RTQ1 + GATE_1C
+
+kinetic RTQ1 + GATE_2 -> R1 + GATE_2A
+kinetic BTR1 + GATE_2A -> IB1 + GATE_2B
+kinetic C1 + GATE_2B -> TCC1 + GATE_2C
+kinetic ITC1 + GATE_2C -> I1 + GATE_2D

@@ -1,0 +1,5 @@
+declare system Solov:  -> 
+
+import Solov_1_0
+
+component solo = Solov_1_0(6,21,0): IA + IB + R -> TCC + IB
